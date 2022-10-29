@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*  DO NOT FORMAT HERE */
+
+h1 {
+  @apply text-4xl font-semibold p-1;
+}
+
+h2 {
+  @apply text-3xl font-semibold p-1;
+}
+
+h3 {
+  @apply text-2xl font-medium;
+}
+
+.disabled {
+  @apply opacity-50;
+}
+
+.button {
+  @apply px-4 py-2 text-center shadow-md rounded-sm transition focus:outline-none focus:ring-2 focus:ring-opacity-75 transform-gpu duration-500 hover:scale-105;
+}
+
+.btn {
+  @apply button bg-gray-400 hover:bg-gray-300;
+}
+
+.btn-Header {
+  @apply button bg-gray-100 bg-opacity-75 hover:bg-gray-400 hover:bg-opacity-75 mx-3 tracking-wide;
+}
