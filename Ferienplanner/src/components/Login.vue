@@ -37,7 +37,7 @@ export default defineComponent({
   },
   methods: {
     createLS() {
-      if (!localStorage.getItem("LoggedIn")) localStorage.setItem("LoggedIn", "0");
+      if (!localStorage.getItem("loggedIn")) localStorage.setItem("loggedIn", "0");
     },
 
     checkLogin() {
