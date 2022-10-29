@@ -9,23 +9,24 @@
         </div>
         <div class="w-full bg-gray-100 px-4 py-4">
           <!-- entries -->
-          <div class="flex flex-wrap border-b-2 border-gray-300">
-            <div class="overflow-hidden w-[35%] p-2">
-              <p class="text-xl">{{ fromDate.toDateString().substring(4) }} - {{ toDate.toDateString().substring(4) }}
-              </p>
-              <p class="my-2">{{ numOfDays }} Urlaubstage</p>
+          <div class="flex flex-wrap border-b-2 border-gray-300"  v-for="entry in Entries">
+              <!-- {{console.log(entry)}} -->
+              <div class="overflow-hidden w-[35%] p-2">
+                <p class="text-xl">{{ entry.VacStartDate }} - {{ entry.VacEndDate }}
+                </p>
+                <p class="my-2">{{ numOfDays }} Urlaubstage</p>
+              </div>
+              <div class="overflow-hidden w-[25%] p-2">
+                <div
+                  class="px-4 py-2 text-center shadow-md rounded-sm transition focus:outline-none focus:ring-2 focus:ring-opacity-75 w-full bg-green-300"
+                  type="submit">{{ entry.isApproved ? "Antrag genehmigt" : "Ausstehend" }}</div>
+              </div>
+              <div class="overflow-hidden w-[40%] p-2">{{ entry.Comment }}</div>
             </div>
-            <div class="overflow-hidden w-[25%] p-2">
-              <div :class="isApproved ? 'bg-green-300' : 'bg-red-300'"
-                class="px-4 py-2 text-center shadow-md rounded-sm transition focus:outline-none focus:ring-2 focus:ring-opacity-75 w-full"
-                type="submit">{{ isApproved ? "Antrag genehmigt" : "Ausstehend" }}</div>
-            </div>
-            <div class="overflow-hidden w-[40%] p-2">{{ comment }}</div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -34,23 +35,52 @@ export default defineComponent({
   components: {},
   setup() { },
   data() {
-    let fromDate = new Date("2000-01-01");
-    let toDate = new Date("2000-01-01");
-    let numOfDays = 0;
-    let isApproved = false;
-    let comment = "";
+
 
 
     return {
-      fromDate,
-      toDate,
-      numOfDays,
-      isApproved,
-      comment
+      Entries:[
+        {
+          ID: null,
+          isApproved: null,
+          isFullday: false,
+          VacEndDate: null,
+          VacStartDate: null,
+          Comment: null
+        }
+      ]
     }
   },
-  mounted() { },
-  methods: {},
+  mounted() { this.GetUserVacation(1)},
+  methods: {
+    GetUserVacation: function (userID) {
+      fetch('http://localhost:34474/API/Vacation')
+        .then(res => {
+          return res.json();
+        })
+        .then(data => {
+          data.forEach(vacation => {
+            if (vacation.UserID === userID) {
+              this.Entries = [
+               {
+                  ID: vacation.ID, isApproved: vacation.isApproved, isFullday: vacation.isFullday, VacEndDate: vacation.VacEndDate, VacStartDate: vacation.VacStartDate, Comment: vacation.Comment
+                },
+                ...this.Entries
+            
+              ]
+               console.log(this.Entries)
+              // // console.log(vacation)
+              // console.log(this.Entries)
+              // this.fromDate = vacation.VacStartDate
+              // this.toDate = vacation.VacEndDate
+              // this.numOfDays = 1
+              // this.comment = vacation.VacatonReasonID
+            }            
+
+          });
+        })
+    },
+  },
 });
 </script>
 
