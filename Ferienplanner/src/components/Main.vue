@@ -150,18 +150,14 @@ export default {
         })
         .then(data => {
           data.forEach(vacation => {
-            if (vacation.UserID === userID) {
-              console.log(vacation);
-            }
 
-            let backgroundColor = 'red'
+              let backgroundColor = 'rgb(252 165 165)' //red
             if(vacation.IsApproved == true)
-              { backgroundColor = 'green'}
+              { backgroundColor = 'rgb(134 239 172)'} //green
             this.calendarOptions.events = [
               ...this.calendarOptions.events,
-              { title: "vacation.VacationReason", start: vacation.VacStartDate, end: vacation.VacEndDate, color: backgroundColor}
-            ]
-
+              { title: vacation.Comment, start: vacation.VacStartDate, end: vacation.VacEndDate, color: backgroundColor}
+              ]
           });
         })
     },
@@ -176,7 +172,7 @@ export default {
       let fromDateValueDate = fromDateValueStr;
       let toDateValueDate = toDateValueStr;
 
-      let titletxt = VacationTitle;
+      let titletxt = VacationTitle + ' | ' + Description;
 
       let xhr = new XMLHttpRequest();
       xhr.open("POST", "http://localhost:34474/api/vacation");
@@ -189,6 +185,9 @@ export default {
           console.log(xhr.responseText);
         }
       };
+      // if(VacationTitle = 'Andere') {
+      //   titletxt = Description
+      // }
 
       let data = {
         "ID": 1,
@@ -197,18 +196,13 @@ export default {
         "IsFullDay": true,
         "IsApproved": false,
         "VacationReasonID": 2,
-        "VacEndDate": fromDateValueDate
+        "VacEndDate": fromDateValueDate,
+        "Comment": titletxt
       };
-
       xhr.send(JSON.stringify(data));
-
-      if(VacationTitle = 'Andere') {
-        titletxt = Description
-      }
-
       this.calendarOptions.events = [
         ...this.calendarOptions.events,
-        { title: titletxt, start: fromDateValueDate, end: toDateValueDate, color: 'red' }
+        { title: titletxt, start: fromDateValueDate, end: toDateValueDate, color: 'rgb(252 165 165)' }
       ]
     },
 
@@ -232,12 +226,9 @@ export default {
         })
         .then(data => {
           data.forEach(vacation => {
-            console.log(vacation)
-            if (vacation.UserID === userID) {
-              console.log(vacation)
+            console.log(vacation)   
               if (!vacation.IsApproved) {
-                this.PendingVacations++
-              }
+                this.PendingVacations++         
             }
           })
         })
@@ -245,8 +236,8 @@ export default {
   },
   mounted() {
     this.MarkUserVacationDates(localStorage.getItem("UserID"));
-    this.GetVacationAmount(6);
-    this.GetPendingVacationAmt(6);
+    this.GetVacationAmount(localStorage.getItem("UserID"));
+    this.GetPendingVacationAmt(localStorage.getItem("UserID"));
     // this.PostVacation();
   }
 

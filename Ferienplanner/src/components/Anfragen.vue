@@ -51,7 +51,7 @@ export default defineComponent({
       ]
     }
   },
-  mounted() { this.GetUserVacation(1)},
+  mounted() { this.GetUserVacation(localStorage.getItem("UserID"))},
   methods: {
     GetUserVacation: function (userID) {
       fetch('http://localhost:34474/API/Vacation')
@@ -60,7 +60,7 @@ export default defineComponent({
         })
         .then(data => {
           data.forEach(vacation => {
-            if (vacation.UserID === userID) {
+        
               this.Entries = [
                {
                   ID: vacation.ID, isApproved: vacation.isApproved, isFullday: vacation.isFullday, VacEndDate: vacation.VacEndDate, VacStartDate: vacation.VacStartDate, Comment: vacation.Comment
@@ -68,14 +68,7 @@ export default defineComponent({
                 ...this.Entries
             
               ]
-               console.log(this.Entries)
-              // // console.log(vacation)
-              // console.log(this.Entries)
-              // this.fromDate = vacation.VacStartDate
-              // this.toDate = vacation.VacEndDate
-              // this.numOfDays = 1
-              // this.comment = vacation.VacatonReasonID
-            }            
+                     
 
           });
         })
