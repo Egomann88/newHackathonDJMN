@@ -223,7 +223,7 @@ export default {
       }
     },
   mounted() {
-    this.MarkUserVacationDates(6);
+    this.MarkUserVacationDates(localStorage.getItem("UserID"));
     this.GetVacationAmount(6);
     this.GetPendingVacationAmt(6);
     // this.PostVacation();
