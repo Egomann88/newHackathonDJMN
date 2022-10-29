@@ -2,7 +2,7 @@
   <div class="bg-[#cbcbcb] py-4">
     <div class="flex flex-wrap overflow-hidden w-3/4 m-auto pt-2">
       <div class="w-1/3 px-4">
-        <form class="flex flex-wrap w-full overflow-hidden py-4 bg-gray-100 p-4" @submit="PostVacation(1)">
+        <div class="flex flex-wrap w-full overflow-hidden py-4 bg-gray-100 p-4">
           <div class="w-full overflow-hidden py-4">
             <div class="w-full py-2 px-4 ">
               <div class="border-black border-2 rounded-sm">
@@ -34,7 +34,6 @@
                 <option>Operation</option>
                 <option>Familie</option>
                 <option>Andere</option>
-                <!-- <option v-for="res in vacationReasons">{{res.VacationReason}}</option> -->
               </select>
             </div>
           </div>
@@ -48,7 +47,7 @@
             <button class="button w-full my-4 bg-green-300 hover:bg-green-400" @click="onSaveClick()" type="submit"
               value="submit">Bestätigen</button>
           </div>
-        </form>
+        </div>
         <aside class="mt-4 bg-gray-100">
           <div class="p-4">
             <h2>Statistiken</h2>
@@ -144,11 +143,11 @@ export default {
         .then(data => {
           data.forEach(vacation => {
             if (vacation.UserID === userID) {
-              console.log(vacation.VacDayDate);
+              console.log(vacation);
             }
             this.calendarOptions.events = [
               ...this.calendarOptions.events,
-              { title: 'Vacation', start: vacation.VacStartDate, end: vacation.VacEndDate }
+              { title: "vacation.VacationReason", start: vacation.VacStartDate, end: vacation.VacEndDate }
             ]
           });
         })
@@ -173,16 +172,17 @@ export default {
         console.log(xhr.responseText);
       }};
 
-      let data =  {
-          "UserID": userID,
-          "VacStartDate": fromDateValueDate,
-          "IsFullDay": true,
-          "IsApproved": false,
-          "VacationReasonID": 2,
-          "VacEndDate": toDateValueDate
-      };
+      let data = {
+        "ID": 1,
+        "UserID": userID,
+        "VacStartDate": toDateValueDate,
+        "IsFullDay": true,
+        "IsApproved": false,
+        "VacationReasonID": 2,
+        "VacEndDate": fromDateValueDate
+    };
 
-    xhr.send(data);
+    xhr.send(JSON.stringify(data));
 
     this.calendarOptions.events = [
               ...this.calendarOptions.events,
