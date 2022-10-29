@@ -13,7 +13,7 @@
             <div class="w-full py-2 px-4 ">
               <div class="border-black border-2 rounded-sm">
                 <p class="text-center bg-[#519ad6] rounded-t-sm">Passwort</p>
-                <input class="p-2 rounded-b-sm w-full" type="password" required>
+                <input class="p-2 rounded-b-sm w-full" v-model="myInput" type="password" required>
               </div>
             </div>
           </div>
@@ -42,6 +42,15 @@ export default defineComponent({
 
     checkLogin() {
       // check login in database
+      localStorage.setItem("loggedIn", "1") //for test
+      // fetch('http://localhost:34474/API/User')
+      //   .then(res => {
+      //     return res.json()
+      //   })
+      //   .then(data => {
+      //     if (data.UserPassword == this.myInput)
+      //       localStorage.setItem("loggedIn", "1")
+      //   })
     }
   },
 });

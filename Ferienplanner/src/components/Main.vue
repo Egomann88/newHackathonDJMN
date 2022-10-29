@@ -80,8 +80,6 @@ export default {
     let showUntilInput = true;
     let VacationAmount = 0;
     let PendingVacations = 0
-    let from = new Date("2000-01-01")
-    let to = new Date("2000-01-01")
 
     return {
       VacationAmount,
@@ -123,22 +121,33 @@ export default {
     }
   },
   methods: {
-    MarkUserVacationDates: function(userID){
-      fetch('http://localhost:34474/API/Vacation')
-      .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        data.forEach(vacation => {
-          this.calendarOptions.events = [
-          ...this.calendarOptions.events,
-          {title: 'Test', date: vacation.VacDayDate}
-          ]
-        });
-      })
+    // Changes View to clicked day
+    changeToDay: function (info) {
+      console.log("Clicked", info);
+      // Gets connection to database
+      let calendarApi = this.$refs.fullCalendar.getApi()
+      calendarApi.changeView('dayGridDay', info.date)
     },
 
-    onSaveClick: function() {
+    MarkUserVacationDates: function (userID) {
+      fetch('http://localhost:34474/API/Vacation')
+        .then(res => {
+          return res.json();
+        })
+        .then(data => {
+          data.forEach(vacation => {
+            if (vacation.UserID === userID) {
+              console.log(vacation.VacDayDate);
+            }
+            this.calendarOptions.events = [
+              ...this.calendarOptions.events,
+              { title: 'Vacation', start: vacation.VacStartDate, end: vacation.VacEndDate }
+            ]
+          });
+        })
+    },
+
+    onSaveClick: function(userID) {
       // strings
       let fromDateValueStr = document.getElementById("fromDate").value;
       let toDateValueStr = document.getElementById("toDate").value;
@@ -146,77 +155,67 @@ export default {
       let fromDateValueDate = fromDateValueStr;
       let toDateValueDate = toDateValueStr;
 
-      alert("fromdate int " + toDateValueDate);
-      alert("todate int " + fromDateValueDate);
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:34474/api/vacation");
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        console.log(xhr.status);
+        console.log(xhr.responseText);
+      }};
+
+      let data =  {
+          "UserID": userID,
+          "VacStartDate": fromDateValueDate,
+          "IsFullDay": true,
+          "IsApproved": false,
+          "VacationReasonID": 2,
+          "VacStartDate": toDateValueDate
+      };
+
+    xhr.send(data);
+
+    this.calendarOptions.events = [
+              ...this.calendarOptions.events,
+              { title: 'VacationTest', start: fromDateValueDate, end: toDateValueDate }
+            ]
     },
 
     GetVacationAmount: function(userID) {
       fetch('http://localhost:34474/API/user')
-      .then(res => {
-        return res.json()
-      })
-      .then(data => {
-        data.forEach(user => {
-          if (user.ID === userID) {
-          // console.log(user)
-          this.VacationAmount = user.VacationCredit;
-          }
+        .then(res => {
+          return res.json()
         })
-      })
-    },
-    GetPendingVacationAmt: function(userID)  {
-      fetch('http://localhost:34474/API/Vacation')
-      .then(res => {
-        return res.json()
-      })
-      .then(data => {
-        data.forEach(vacation => {
-          console.log(vacation)
-          if (vacation.UserID === userID)  {
-            console.log(vacation)
-            if  (!vacation.IsApproved) {
-              this.PendingVacations++
+        .then(data => {
+          data.forEach(user => {
+            if (user.ID === userID) {
+              // console.log(user)
+              this.VacationAmount = user.VacationCredit;
             }
-          }
+          })
         })
-      })
     },
-    PostVacation: function(userID) {
-  //     let xhr = new XMLHttpRequest();
-  //   xhr.open("POST", "http://localhost:34474/api/vacation");
-  //   xhr.setRequestHeader("Accept", "application/json");
-  //   xhr.setRequestHeader("Content-Type", "application/json");
-
-  // xhr.onreadystatechange = function () {
-  // if (xhr.readyState === 4) {
-  //   console.log(xhr.status);
-  //   console.log(xhr.responseText);
-  // }};
-  // let diffInDays = (this.to.getTime() - this.from.getTime()) / (1000 * 3600 * 24);
-  // alert(diffInDays)
-  // for(this.from; this.to <= this.from; this.from.getDate()++) {
-  //   alert(this.to);
-  //   alert(this.from);
-console.log(this.from)
-console.log(this.to)
-  for (this.form; this.from <= this.to; this.from.setDate(this.from.getDate() + 1)) {
-    console.log(this.from)
-}
-  
-
-  // let data = ` {
-  //       "ID": 1,
-  //       "UserID": 9,
-  //       "VacDayDate": "2022-06-21",
-  //       "IsFullDay": true,
-  //       "IsApproved": true,
-  //       "VacationReasonID": 2
-  //   }`;
-
-// xhr.send(data);
-    }
-  },
-  mounted(){
+    GetPendingVacationAmt: function (userID) {
+      fetch('http://localhost:34474/API/Vacation')
+        .then(res => {
+          return res.json()
+        })
+        .then(data => {
+          data.forEach(vacation => {
+            console.log(vacation)
+            if (vacation.UserID === userID) {
+              console.log(vacation)
+              if (!vacation.IsApproved) {
+                this.PendingVacations++
+              }
+            }
+          })
+        })
+      }
+    },
+  mounted() {
     this.MarkUserVacationDates(6);
     this.GetVacationAmount(6);
     this.GetPendingVacationAmt(6);
