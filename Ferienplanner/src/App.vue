@@ -5,8 +5,24 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script  lang="ts">
+import { defineComponent } from "vue";
 import Header from "./components/Navbar.vue";
+
+export default defineComponent({
+  components: {
+    Header,
+  },
+  setup() { },
+  mounted() {
+    this.checkLogin();
+  },
+  methods: {
+    checkLogin() {
+      if (localStorage.getItem("loggedIn") == "0" || !localStorage.getItem("loggedIn")) this.$router.push("/login");
+    }
+  },
+});
 </script>
 
 <style scoped>
