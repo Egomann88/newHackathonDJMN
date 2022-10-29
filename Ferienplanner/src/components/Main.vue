@@ -121,8 +121,10 @@ export default {
     }
   },
   methods: {
+    // Changes View to clicked day
     changeToDay: function (info) {
       console.log("Clicked", info);
+      // Gets connection to database
       let calendarApi = this.$refs.fullCalendar.getApi()
       calendarApi.changeView('dayGridDay', info.date)
     },
