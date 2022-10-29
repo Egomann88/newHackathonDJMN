@@ -26,6 +26,14 @@
               <p class="text-center bg-[#519ad6] rounded-t-sm w-full">Grund*</p>
               <select class="w-full minimal">
                 <option>--Auswählen--</option>
+                <option>Schule</option>
+                <option>Urlaub</option>
+                <option>Militär</option>
+                <option>Kurs</option>
+                <option>Weiterbildung</option>
+                <option>Operation</option>
+                <option>Familie</option>
+                <option>Andere</option>
                 <!-- <option v-for="res in vacationReasons">{{res.VacationReason}}</option> -->
               </select>
             </div>
@@ -171,7 +179,7 @@ export default {
           "IsFullDay": true,
           "IsApproved": false,
           "VacationReasonID": 2,
-          "VacStartDate": toDateValueDate
+          "VacEndDate": toDateValueDate
       };
 
     xhr.send(data);
