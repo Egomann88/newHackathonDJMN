@@ -109,7 +109,23 @@ export default {
     }
   },
   methods: {
-
+    MarkUserVacationDates: function(userID){
+      fetch('http://localhost:34474/API/Vacation')
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        data.forEach(vacation => {
+          if(vacation.UserID === userID){
+            console.log(vacation.VacDayDate);
+          }
+        });
+      })
+    },
+  },
+  mounted(){
+    this.MarkUserVacationDates(6);
   }
+
 }
 </script>
