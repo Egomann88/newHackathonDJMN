@@ -56,7 +56,7 @@
       </div>
       <div class="w-2/3 h-full px-4">
         <div class="bg-gray-100 p-4">
-          <!-- <FullCalendar ref="fullCalendar" :options="calendarOptions" /> -->
+          <FullCalendar ref="fullCalendar" :options="calendarOptions" />
         </div>
       </div>
     </div>
@@ -64,16 +64,23 @@
 </template>
 
 <script>
+import '@fullcalendar/core/vdom' // solves problem with Vite
+import FullCalendar from '@fullcalendar/vue3'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import deLocale from '@fullcalendar/core/locales/de';
+
+
 export default {
   components: {
-    /* FullCalendar */ // make the <FullCalendar> tag available
+    FullCalendar // make the <FullCalendar> tag available
   },
   data() {
     let showUntilInput = true;
 
     return {
       showUntilInput,
-      /* calendarOptions: {
+      calendarOptions: {
         plugins: [dayGridPlugin, interactionPlugin],
         // view on start of page
         initialView: 'dayGridMonth',
@@ -105,7 +112,7 @@ export default {
         locales: [deLocale],
         locale: 'de',
         dateClick: this.changeToDay, // On Date Click, calls function declared in methods
-      }, */
+      },
     }
   },
   methods: {
