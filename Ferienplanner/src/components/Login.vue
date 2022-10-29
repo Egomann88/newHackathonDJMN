@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-[#cbcbcb] py-4">
     <div class="flex flex-wrap overflow-hidden w-1/3 m-auto pt-2 mt-1/2 transform translate-y-1/2">
       <div class="w-full px-4">
-        <form class="flex flex-wrap w-full overflow-hidden py-4 bg-gray-100 p-4">
+        <form @submit="checkLogin()" class="flex flex-wrap w-full overflow-hidden py-4 bg-gray-100 p-4">
           <div class="w-full overflow-hidden py-4">
             <div class="w-full py-2 px-4 ">
               <div class="border-black border-2 rounded-sm">
@@ -32,8 +32,18 @@ import { defineComponent } from "vue";
 export default defineComponent({
   components: {},
   setup() { },
-  mounted() { },
-  methods: {},
+  mounted() {
+    this.createLS();
+  },
+  methods: {
+    createLS() {
+      if (!localStorage.getItem("LoggedIn")) localStorage.setItem("LoggedIn", "0");
+    },
+
+    checkLogin() {
+      // check login in database
+    }
+  },
 });
 </script>
 
