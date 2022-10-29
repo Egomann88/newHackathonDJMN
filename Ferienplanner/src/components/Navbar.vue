@@ -12,6 +12,18 @@
           </router-link>
           <router-link to="/anfragen" class="btn-Header m-2 inline-block text-lg">Anträge
           </router-link>
+          <div class="inline-block items-center float-right m-2 mr-10">
+            <div>
+              <button @click="showFullName = !showFullName" type="button"
+                class="items-center bg-transparent border-none flex justify-center min-h-[44px]">
+                <span
+                  class="items-center bg-gray-100 rounded-full text-black flex h-[2.4rem] w-[2.4rem] justify-center transform-gpu duration-300 hover:bg-gray-300 hover:scale-125">
+                  {{ firstNameLetter + lastNameLetter }}</span>
+              </button>
+              <div v-if="showFullName" class="bg-gray-100 p-2 absolute right-3 mt-4">{{ firstName + ' ' + lastName }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -23,6 +35,21 @@ import { defineComponent } from "vue";
 export default defineComponent({
   components: {},
   setup() { },
+  data() {
+    let showFullName = false;
+    let firstName = "Justin";
+    let lastName = "Urbanek";
+    let firstNameLetter = firstName.slice(0, 1);
+    let lastNameLetter = lastName.slice(0, 1);
+
+    return {
+      showFullName,
+      firstName,
+      lastName,
+      firstNameLetter,
+      lastNameLetter
+    }
+  },
   mounted() { },
   methods: {
     isLoggedIn() {
