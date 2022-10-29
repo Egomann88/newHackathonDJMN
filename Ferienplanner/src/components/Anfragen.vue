@@ -18,8 +18,9 @@
               </div>
               <div class="overflow-hidden w-[25%] p-2">
                 <div
-                  class="px-4 py-2 text-center shadow-md rounded-sm transition focus:outline-none focus:ring-2 focus:ring-opacity-75 w-full bg-green-300"
-                  type="submit">{{ entry.isApproved ? "Antrag genehmigt" : "Ausstehend" }}</div>
+                :class="entry.isApproved==1 ? 'bg-green-300' : 'bg-red-300'"
+                  class="px-4 py-2 text-center shadow-md rounded-sm transition focus:outline-none focus:ring-2 focus:ring-opacity-75 w-full"
+                  type="submit">{{ entry.isApproved==1 ? "Antrag genehmigt" : "Ausstehend" }}</div>
               </div>
               <div class="overflow-hidden w-[40%] p-2">{{ entry.Comment }}</div>
             </div>
@@ -66,10 +67,10 @@ export default defineComponent({
                   ID: vacation.ID, isApproved: vacation.isApproved, isFullday: vacation.isFullday, VacEndDate: vacation.VacEndDate, VacStartDate: vacation.VacStartDate, Comment: vacation.Comment
                 },
                 ...this.Entries
+    
             
               ]
-                     
-
+                console.log(this.Entries)     
           });
         })
     },

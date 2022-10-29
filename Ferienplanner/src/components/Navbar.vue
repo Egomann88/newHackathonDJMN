@@ -37,8 +37,8 @@ export default defineComponent({
   setup() { },
   data() {
     let showFullName = false;
-    let firstName = "Justin";
-    let lastName = "Urbanek";
+    let firstName = "Max";
+    let lastName = "Mustermann";
     let firstNameLetter = firstName.slice(0, 1);
     let lastNameLetter = lastName.slice(0, 1);
 
@@ -52,10 +52,12 @@ export default defineComponent({
   },
   mounted() { },
   methods: {
+    
     isLoggedIn() {
       if (localStorage.getItem('loggedIn') == '1') return true;
       return false;
-    }
+    },
+    
   },
 });
 </script>

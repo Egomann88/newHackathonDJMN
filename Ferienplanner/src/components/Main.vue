@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[#cbcbcb] py-4">
+  <div class=" bg-[#cbcbcb] py-4">
     <div class="flex flex-wrap overflow-hidden w-3/4 m-auto pt-2">
       <div class="w-1/3 px-4">
         <div class="flex flex-wrap w-full overflow-hidden py-4 bg-gray-100 p-4">
@@ -150,7 +150,7 @@ export default {
         })
         .then(data => {
           data.forEach(vacation => {
-
+            
               let backgroundColor = 'rgb(252 165 165)' //red
             if(vacation.IsApproved == true)
               { backgroundColor = 'rgb(134 239 172)'} //green
@@ -185,9 +185,6 @@ export default {
           console.log(xhr.responseText);
         }
       };
-      // if(VacationTitle = 'Andere') {
-      //   titletxt = Description
-      // }
 
       let data = {
         "ID": 1,
@@ -213,8 +210,10 @@ export default {
         })
         .then(data => {
           data.forEach(user => {
-            if (user.ID === userID) {
+            console.log(user.ID)
+            if (user.ID == userID) {
               this.VacationAmount = user.VacationCredit;
+    
             }
           })
         })
