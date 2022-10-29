@@ -128,7 +128,6 @@ export default {
       let calendarApi = this.$refs.fullCalendar.getApi()
       calendarApi.changeView('dayGridDay', info.date)
     },
-
     MarkUserVacationDates: function (userID) {
       fetch('http://localhost:34474/API/Vacation')
         .then(res => {
