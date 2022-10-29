@@ -2,7 +2,7 @@
   <div class="bg-[#cbcbcb] py-4">
     <div class="flex flex-wrap overflow-hidden w-3/4 m-auto pt-2">
       <div class="w-1/3 px-4">
-        <form class="flex flex-wrap w-full overflow-hidden py-4 bg-gray-100 p-4" @submit="PostVacation(1)">
+        <div class="flex flex-wrap w-full overflow-hidden py-4 bg-gray-100 p-4">
           <div class="w-full overflow-hidden py-4">
             <div class="w-full py-2 px-4 ">
               <div class="border-black border-2 rounded-sm">
@@ -18,13 +18,14 @@
             </div>
           </div>
           <div class="w-full px-4 py-2">
-            <input class=" inline-block m-2" id="halfDAy" name="halfDay" type="checkbox" @click="showUntilInput = !showUntilInput" />
+            <input class=" inline-block m-2" id="halfDAy" name="halfDay" type="checkbox"
+              @click="showUntilInput = !showUntilInput" />
             <p class="inline-block">Halber Tag abwesend</p>
           </div>
           <div class="w-full px-4 py-2">
             <div class="border-black border-2 rounded-sm">
               <p class="text-center bg-[#519ad6] rounded-t-sm w-full">Grund*</p>
-              <select class="w-full minimal">
+              <select class="w-full minimal" id="VacationTitle">
                 <option>--Auswählen--</option>
                 <option>Schule</option>
                 <option>Urlaub</option>
@@ -34,21 +35,20 @@
                 <option>Operation</option>
                 <option>Familie</option>
                 <option>Andere</option>
-                <!-- <option v-for="res in vacationReasons">{{res.VacationReason}}</option> -->
               </select>
             </div>
           </div>
           <div class="flex w-full px-4 ">
             <div class="border-black border-2 rounded-sm w-full">
               <p class=" bg-[#519ad6] rounded-t-sm text-center">Beschreibung</p>
-              <textarea class="p-2 rounded-b-sm w-full max-h-[10rem]" name="" id="" rows="3"></textarea>
+              <textarea class="p-2 rounded-b-sm w-full max-h-[10rem]" name="" id="Description" rows="3"></textarea>
             </div>
           </div>
           <div class="w-full px-4">
             <button class="button w-full my-4 bg-green-300 hover:bg-green-400" @click="onSaveClick()" type="submit"
-              value="submit">Bestätigen</button>
+              value="submit">Beantragen</button>
           </div>
-        </form>
+        </div>
         <aside class="mt-4 bg-gray-100">
           <div class="p-4">
             <h2>Statistiken</h2>
@@ -102,12 +102,19 @@ export default {
         headerToolbar: {
           center: 'dayGridMonth,dayGridWeek,dayGridDay' // buttons for switching between views
         },
+        businessHours: {
+          // days of week. an array of zero-based day of week integers (0=Sunday)
+          daysOfWeek: [1, 2, 3, 4, 5], // Monday - Thursday
+          startTime: '8:00', // a start time (10am in this example)
+          endTime: '18:00', // an end time (6pm in this example)
+        },
         events: [
           {
             // id: '1',
             // title: 'Testevent',
             // start: '2022-10-28'
-          }],
+          },],
+          
         // The custom views with settings
         views: {
           dayGridMonth: {
@@ -144,53 +151,68 @@ export default {
         .then(data => {
           data.forEach(vacation => {
             if (vacation.UserID === userID) {
-              console.log(vacation.VacDayDate);
+              console.log(vacation);
             }
+
+            let backgroundColor = 'red'
+            if(vacation.IsApproved == true)
+              { backgroundColor = 'green'}
             this.calendarOptions.events = [
               ...this.calendarOptions.events,
-              { title: 'Vacation', start: vacation.VacStartDate, end: vacation.VacEndDate }
+              { title: "vacation.VacationReason", start: vacation.VacStartDate, end: vacation.VacEndDate, color: backgroundColor}
             ]
+
           });
         })
     },
 
-    onSaveClick: function(userID) {
+    onSaveClick: function (userID) {
       // strings
       let fromDateValueStr = document.getElementById("fromDate").value;
       let toDateValueStr = document.getElementById("toDate").value;
+      let VacationTitle = document.getElementById("VacationTitle").value;
+      let Description = document.getElementById("Description").value;
       // date
       let fromDateValueDate = fromDateValueStr;
       let toDateValueDate = toDateValueStr;
 
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:34474/api/vacation");
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Content-Type", "application/json");
+      let titletxt = VacationTitle;
+
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", "http://localhost:34474/api/vacation");
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
 
       xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        console.log(xhr.status);
-        console.log(xhr.responseText);
-      }};
-
-      let data =  {
-          "UserID": userID,
-          "VacStartDate": fromDateValueDate,
-          "IsFullDay": true,
-          "IsApproved": false,
-          "VacationReasonID": 2,
-          "VacEndDate": toDateValueDate
+        if (xhr.readyState === 4) {
+          console.log(xhr.status);
+          console.log(xhr.responseText);
+        }
       };
 
-    xhr.send(data);
+      let data = {
+        "ID": 1,
+        "UserID": userID,
+        "VacStartDate": toDateValueDate,
+        "IsFullDay": true,
+        "IsApproved": false,
+        "VacationReasonID": 2,
+        "VacEndDate": fromDateValueDate
+      };
 
-    this.calendarOptions.events = [
-              ...this.calendarOptions.events,
-              { title: 'VacationTest', start: fromDateValueDate, end: toDateValueDate }
-            ]
+      xhr.send(JSON.stringify(data));
+
+      if(VacationTitle = 'Andere') {
+        titletxt = Description
+      }
+
+      this.calendarOptions.events = [
+        ...this.calendarOptions.events,
+        { title: titletxt, start: fromDateValueDate, end: toDateValueDate, color: 'red' }
+      ]
     },
 
-    GetVacationAmount: function(userID) {
+    GetVacationAmount: function (userID) {
       fetch('http://localhost:34474/API/user')
         .then(res => {
           return res.json()
@@ -198,7 +220,6 @@ export default {
         .then(data => {
           data.forEach(user => {
             if (user.ID === userID) {
-              // console.log(user)
               this.VacationAmount = user.VacationCredit;
             }
           })
@@ -220,8 +241,8 @@ export default {
             }
           })
         })
-      }
-    },
+    }
+  },
   mounted() {
     this.MarkUserVacationDates(localStorage.getItem("UserID"));
     this.GetVacationAmount(6);
