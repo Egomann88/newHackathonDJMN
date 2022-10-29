@@ -42,6 +42,7 @@ export default defineComponent({
 
     checkLogin() {
       // check login in database
+      localStorage.setItem("loggedIn", "1") // just for testing, bypass login
     }
   },
 });

@@ -116,21 +116,26 @@ export default {
     }
   },
   methods: {
-    MarkUserVacationDates: function(userID){
+    changeToDay: function (info) {
+      console.log("Clicked", info);
+      let calendarApi = this.$refs.fullCalendar.getApi()
+      calendarApi.changeView('dayGridDay', info.date)
+    },
+    MarkUserVacationDates: function (userID) {
       fetch('http://localhost:34474/API/Vacation')
-      .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        data.forEach(vacation => {
-          if(vacation.UserID === userID){
-            console.log(vacation.VacDayDate);
-          }
-        });
-      })
+        .then(res => {
+          return res.json();
+        })
+        .then(data => {
+          data.forEach(vacation => {
+            if (vacation.UserID === userID) {
+              console.log(vacation.VacDayDate);
+            }
+          });
+        })
     },
   },
-  mounted(){
+  mounted() {
     this.MarkUserVacationDates(6);
   }
 

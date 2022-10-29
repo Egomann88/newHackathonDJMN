@@ -6,7 +6,7 @@
           <img src="../assets/logo.svg" alt="Projekt Ferienplanner" class="h-full hidden lg:inline " />
         </div>
         <div v-if="isLoggedIn()" class="w-full lg:w-2/3 pl-20">
-          <router-link to="/" class="btn-Header m-2 inline-block text-lg">Kalendar
+          <router-link to="/calendar" class="btn-Header m-2 inline-block text-lg">Kalendar
           </router-link>
           <router-link to="/statistic" class="btn-Header m-2 inline-block text-lg">Statistik
           </router-link>
