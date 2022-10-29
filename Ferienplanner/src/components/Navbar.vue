@@ -10,7 +10,7 @@
           </router-link>
           <router-link to="/statistic" class="btn-Header m-2 inline-block text-lg">Statistik
           </router-link>
-          <router-link to="/" class="btn-Header m-2 inline-block text-lg">Anfragen
+          <router-link to="/anfragen" class="btn-Header m-2 inline-block text-lg">Anfragen
           </router-link>
         </div>
       </div>
