@@ -16,8 +16,8 @@
               <p class="my-2">{{ numOfDays }} Urlaubstage</p>
             </div>
             <div class="overflow-hidden w-[25%] p-2">
-              <div
-                class="px-4 py-2 text-center shadow-md rounded-sm transition focus:outline-none focus:ring-2 focus:ring-opacity-75 w-full bg-green-300"
+              <div :class="isApproved ? 'bg-green-300' : 'bg-red-300'"
+                class="px-4 py-2 text-center shadow-md rounded-sm transition focus:outline-none focus:ring-2 focus:ring-opacity-75 w-full"
                 type="submit">{{ isApproved ? "Antrag genehmigt" : "Ausstehend" }}</div>
             </div>
             <div class="overflow-hidden w-[40%] p-2">{{ comment }}</div>
