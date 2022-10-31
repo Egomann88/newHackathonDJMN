@@ -24,7 +24,7 @@ namespace VacationPlannerDataAPI.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            string query = @"select * from [Vacation]";
+            string query = @"select ID,UserID,convert(varchar(10),VacStartDate,120) as VacStartDate,IsFullDay,IsApproved,VacationReasonID,convert(varchar(10),VacEndDate,120) as VacEndDate, Comment from [Vacation]";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("VacationPlanner");
             SqlDataReader myReader;
@@ -48,10 +48,12 @@ namespace VacationPlannerDataAPI.Controllers
         {
             string query = @"INSERT INTO Vacation VALUES ("
                            +"@UserID, "
-                           +"@VacDayDate, "
-                           +"@IsFullDay, "
+                           + "@VacStartDate, "
+                           + "@IsFullDay, "
                            +"@IsApproved, "
-                           +"@VacationReasonID)";
+                           +"@VacationReasonID,"
+                           +"@VacEndDate,"
+                           + "@Comment)";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("VacationPlanner");
             SqlDataReader myReader;
@@ -61,10 +63,12 @@ namespace VacationPlannerDataAPI.Controllers
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
                     myCommand.Parameters.AddWithValue("@UserID", vacation.ID);
-                    myCommand.Parameters.AddWithValue("@VacDayDate", vacation.VacDayDate);
+                    myCommand.Parameters.AddWithValue("@VacStartDate", vacation.VacStartDate);
                     myCommand.Parameters.AddWithValue("@IsFullDay", vacation.IsFullDay);
                     myCommand.Parameters.AddWithValue("@IsApproved", vacation.IsApproved);
                     myCommand.Parameters.AddWithValue("@VacationReasonID", vacation.VacationReasonID);
+                    myCommand.Parameters.AddWithValue("@VacEndDate", vacation.VacEndDate);
+                    myCommand.Parameters.AddWithValue("@Comment", vacation.Comment);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
