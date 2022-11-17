@@ -2,6 +2,7 @@
 
 ## Project Setup
 > cd ./Ferienplanner
+>
 > npm install
 
 ### Compile and Hot-Reload for Development
